@@ -35,6 +35,7 @@ int main() {
 	//wstring testMouth = LR"(/_____\   =   )";
 	wstring output;
 
+	//facial features hard coded
 	vector <wstring> hair1 = {
 		LR"(                   )",
 		LR"(     _________     )",
@@ -157,11 +158,18 @@ int main() {
 
 	output = L"";
 	wstring criminalFace = faceString;
-	addEyes(criminalFace, eyes[faceRand()]);
-	addNose(criminalFace, noses[faceRand()]);
-	addMouth(criminalFace, mouths[faceRand()]);
-	addHair(criminalFace, hair[faceRand()]);
-	addShape(criminalFace, shape[faceRand()]);
+
+	randEyes = faceRand();
+	randNose = faceRand();
+	randMouth = faceRand();
+	randHair = faceRand();
+	randShape = faceRand();
+
+	addEyes(criminalFace, eyes[randEyes]);
+	addNose(criminalFace, noses[randNose]);
+	addMouth(criminalFace, mouths[randMouth]);
+	addHair(criminalFace, hair[randHair]);
+	addShape(criminalFace, shape[randShape]);
 
 	for (int i = 0; i < criminalFace.length(); i++) {
 		output += criminalFace.at(i);
@@ -170,15 +178,18 @@ int main() {
 		}
 	}
 	wcout << output;
-	wcout << endl;
+	wcout << flush;
 	std::this_thread::sleep_for(std::chrono::milliseconds(1300));
 	system("CLS");
 
 	wcout << L"The criminal got away!" << endl;
 	wcout << L"Help the detective by describing the criminal." << endl;
 
-	for (int i = 0; i < faceString.length(); i++) {
-		output += faceString.at(i);
+	wstring playerFace = faceString;
+	output = L"";
+
+	for (int i = 0; i < playerFace.length(); i++) {
+		output += playerFace.at(i);
 		if ((i + 1) % 25 == 0) {
 			output += L"\n";
 		}
