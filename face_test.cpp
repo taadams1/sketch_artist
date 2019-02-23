@@ -155,55 +155,131 @@ int main() {
 		shape1, shape2, shape3, shape4, shape5
 	};
 
-	//vector <vector <wstring>> features = { eyes, noses, mouths, hair, faces };
+	output = L"";
+	wstring criminalFace = faceString;
+	addEyes(criminalFace, eyes[faceRand()]);
+	addNose(criminalFace, noses[faceRand()]);
+	addMouth(criminalFace, mouths[faceRand()]);
+	addHair(criminalFace, hair[faceRand()]);
+	addShape(criminalFace, shape[faceRand()]);
 
-	//features[0][0] = testEyes;
-	//features[2][0] = testMouth;
-
-	/*for (int i = 0; i < 26; i++) {
-		cout << eyeNums[i] << " ";
-	}*/
-	/*cout << "{";
-	for (int i = 32; i < 255; i++) {
-
-		cout << (char)i << ",";
-
+	for (int i = 0; i < criminalFace.length(); i++) {
+		output += criminalFace.at(i);
+		if ((i + 1) % 25 == 0) {
+			output += L"\n";
+		}
 	}
-	cout << "}";*/
+	wcout << output;
+	wcout << endl;
+	std::this_thread::sleep_for(std::chrono::milliseconds(1300));
+	system("CLS");
+
+	wcout << L"The criminal got away!" << endl;
+	wcout << L"Help the detective by describing the criminal." << endl;
 
 	for (int i = 0; i < faceString.length(); i++) {
 		output += faceString.at(i);
 		if ((i + 1) % 25 == 0) {
 			output += L"\n";
 		}
-		
+
 	}
 
 	wcout << output << endl;
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-	system("CLS");
 
-	for (int i = 0; i < 14; i++) {
-		output = L"";
-		wstring faceString = LR"(-------------------------|                       ||                       ||       _________       ||      /         \      ||     /           \     ||    |  ---------  |    ||    | ----------- |    ||    |      |      |    ||    \     d b     /    ||     \   -----   /     ||      \         /      ||        -------        ||                       |-------------------------)";
-		addEyes(faceString, eyes[faceRand()]);
-		addNose(faceString, noses[faceRand()]);
-		addMouth(faceString, mouths[faceRand()]);
-		addHair(faceString, hair[faceRand()]);
-		addShape(faceString, shape[faceRand()]);
+	//menu code by Mikaela
 
-		for (int i = 0; i < faceString.length(); i++) {
-			output += faceString.at(i);
-			if ((i + 1) % 25 == 0) {
-				output += L"\n";
-			}
+	int selection = 0;
+	int selection2 = 0;
+	const int SIZE = 5;
+	wstring menu[SIZE];
+	menu[0] = L"Eyes"; menu[1] = L"Nose"; menu[2] = L"Mouth"; menu[3] = L"Hair"; menu[4] = L"Face Shape";
+
+	wstring eyesMenu[SIZE];
+	eyesMenu[0] = LR"(  === ≡ ===  
+─(¯¶¯)─(¯¶¯)─)";
+	eyesMenu[1] = LR"(  ___   ___  
+   õ,' '¸õ   )";
+	eyesMenu[2] = LR"(  ‗‗‗   ‗‗‗  
+  ~º.   .º~  )";
+	eyesMenu[3] = LR"(  ___   ___  
+ ¨.ç_   _ç.¨ )";
+	eyesMenu[4] = LR"(  ___   ___  
+ ¨.ð,> <,ð.¨ )";
+
+	wstring noseMenu[SIZE];
+	noseMenu[0] = L"Bigger"; noseMenu[1] = L"Thinner"; noseMenu[2] = L"Higher"; noseMenu[3] = L"Lower"; noseMenu[4] = L"Unibrow";
+
+	wstring mouthMenu[SIZE];
+	mouthMenu[0] = L"option"; mouthMenu[1] = L"option"; mouthMenu[2] = L"option"; mouthMenu[3] = L"option"; mouthMenu[4] = L"option";
+
+	wstring hairMenu[SIZE];
+	hairMenu[0] = L"option"; hairMenu[1] = L"option"; hairMenu[2] = L"option"; hairMenu[3] = L"option"; hairMenu[4] = L"option";
+
+	wstring shapeMenu[SIZE];
+	shapeMenu[0] = L"option"; shapeMenu[1] = L"option"; shapeMenu[2] = L"option"; shapeMenu[3] = L"option"; shapeMenu[4] = L"option";
+
+	while (selection != -1) {
+		wcout << L"Please Pick a Feature to Edit: (or -1 to exit)" << endl;
+		for (int i = 0; i < 5; i++) {
+			wcout << i + 1 << L") ";
+			wcout << menu[i] << endl;
 		}
-		wcout << output;
-		wcout << endl;
-		std::this_thread::sleep_for(std::chrono::milliseconds(1300));
-		system("CLS");
+
+
+		cin >> selection;
+		switch (selection) {
+		case 1:
+			wcout << L"Eye Options: " << endl;
+			for (int i = 0; i < SIZE; i++) {
+				wcout << i + 1 << L")" << endl;
+				wcout << eyesMenu[i] << endl;
+			}
+			cin >> selection2;
+			break;
+		case 2:
+			wcout << L"Nose Options: " << endl;
+			for (int i = 0; i < SIZE; i++) {
+				wcout << i + 1 << L")" << endl;
+				wcout << noseMenu[i] << endl;
+			}
+			cin >> selection2;
+			break;
+		case 3:
+			wcout << L"Mouth Options: " << endl;
+			for (int i = 0; i < SIZE; i++) {
+				wcout << i + 1 << L")" << endl;
+				wcout << mouthMenu[i] << endl;
+			}
+			cin >> selection2;
+			break;
+		case 4:
+			wcout << L"Hair Options: " << endl;
+			for (int i = 0; i < SIZE; i++) {
+				wcout << i + 1 << L")" << endl;
+				wcout << hairMenu[i] << endl;
+			}
+			cin >> selection2;
+			break;
+		case 5:
+			wcout << L"Mouth Options: " << endl;
+			for (int i = 0; i < SIZE; i++) {
+				wcout << i + 1 << L")" << endl;
+				wcout << shapeMenu[i] << endl;
+			}
+			cin >> selection2;
+			break;
+		default:
+			cout << "Please try again" << endl;
+			break;
+		}
 
 	}
+	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	//system("CLS");
+
+
+	
 	char exit;
 	wcout << L"Exit? (y/n): ";
 	cin >> exit;
