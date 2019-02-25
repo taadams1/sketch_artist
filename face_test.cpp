@@ -207,37 +207,42 @@ int main() {
 	wstring menu[SIZE];
 	menu[0] = L"Eyes"; menu[1] = L"Nose"; menu[2] = L"Mouth"; menu[3] = L"Hair"; menu[4] = L"Face Shape";
 
-	wstring eyesMenu[SIZE];
-	eyesMenu[0] = LR"(  === ≡ ===  
-─(¯¶¯)─(¯¶¯)─)";
-	eyesMenu[1] = LR"(  ___   ___  
-   õ,' '¸õ   )";
-	eyesMenu[2] = LR"(  ‗‗‗   ‗‗‗  
-  ~º.   .º~  )";
-	eyesMenu[3] = LR"(  ___   ___  
- ¨.ç_   _ç.¨ )";
-	eyesMenu[4] = LR"(  ___   ___  
- ¨.ð,> <,ð.¨ )";
-
-	wstring noseMenu[SIZE];
-	noseMenu[0] = L"Bigger"; noseMenu[1] = L"Thinner"; noseMenu[2] = L"Higher"; noseMenu[3] = L"Lower"; noseMenu[4] = L"Unibrow";
-
-	wstring mouthMenu[SIZE];
-	mouthMenu[0] = L"option"; mouthMenu[1] = L"option"; mouthMenu[2] = L"option"; mouthMenu[3] = L"option"; mouthMenu[4] = L"option";
+	vector <wstring> eyesMenu = {
+		L"  === ≡ ===  \n─(¯¶¯)─(¯¶¯)─",
+		L"  ___   ___    \n   õ,' '¸õ   ",
+		L"  ‗‗‗    ‗‗‗    \n  ~º.   .º~  ",
+		L"  ___   ___   \n ¨.ç_   _ç.¨ ",
+		L"  ___   ___   \n ¨.ð,> <,ð.¨ "
+	};
+	
+	vector <wstring> noseMenu = {
+		L"   \n(_)",
+		L" | \n'-'",
+		L"| |\n«_»",
+		L" ≡ \nd_b",
+		L" ¦ \nd_b"
+	};
+	
+	vector <wstring> mouthMenu = {
+		L"/_____\\\n   =   ",
+		L" ¬===⌐\n        ",
+		L" _‗‗‗_\n  ¯¯¯  ",
+		L" -═══-\n   -   ",
+		L" =═══=\n   ¯   "
+	};
 
 	wstring hairMenu[SIZE];
-	hairMenu[0] = L"option"; hairMenu[1] = L"option"; hairMenu[2] = L"option"; hairMenu[3] = L"option"; hairMenu[4] = L"option";
 
 	wstring shapeMenu[SIZE];
-	shapeMenu[0] = L"option"; shapeMenu[1] = L"option"; shapeMenu[2] = L"option"; shapeMenu[3] = L"option"; shapeMenu[4] = L"option";
 
-	while (selection != -1) {
-		wcout << L"Please Pick a Feature to Edit: (or -1 to exit)" << endl;
+
+	int count = 0;
+	while (count < 5) {
+		wcout << L"Please Pick a Feature to Edit:" << endl;
 		for (int i = 0; i < 5; i++) {
 			wcout << i + 1 << L") ";
 			wcout << menu[i] << endl;
 		}
-
 
 		cin >> selection;
 		switch (selection) {
@@ -248,14 +253,32 @@ int main() {
 				wcout << eyesMenu[i] << endl;
 			}
 			cin >> selection2;
+			addEyes(playerFace, eyes[selection2 -1]);
+			output = L"";
+			for (int i = 0; i < playerFace.length(); i++) {
+				output += playerFace.at(i);
+			if ((i + 1) % 25 == 0) {
+				output += L"\n";
+				}
+			}
+			wcout << output << endl;
 			break;
 		case 2:
 			wcout << L"Nose Options: " << endl;
 			for (int i = 0; i < SIZE; i++) {
-				wcout << i + 1 << L")" << endl;
+				wcout << i + 1 << L")\n" << endl;
 				wcout << noseMenu[i] << endl;
 			}
 			cin >> selection2;
+			addNose(playerFace, noses[selection2 -1]);
+			output = L"";
+			for (int i = 0; i < playerFace.length(); i++) {
+				output += playerFace.at(i);
+			if ((i + 1) % 25 == 0) {
+				output += L"\n";
+				}
+			}
+			wcout << output << endl;
 			break;
 		case 3:
 			wcout << L"Mouth Options: " << endl;
@@ -264,6 +287,15 @@ int main() {
 				wcout << mouthMenu[i] << endl;
 			}
 			cin >> selection2;
+			addMouth(playerFace, mouths[selection2 -1]);
+			output = L"";
+			for (int i = 0; i < playerFace.length(); i++) {
+				output += playerFace.at(i);
+			if ((i + 1) % 25 == 0) {
+				output += L"\n";
+				}
+			}
+			wcout << output << endl;
 			break;
 		case 4:
 			wcout << L"Hair Options: " << endl;
@@ -274,14 +306,34 @@ int main() {
 				displayFace(hairOpt);
 			}
 			cin >> selection2;
+			addHair(playerFace, hair[selection2 -1]);
+			output = L"";
+			for (int i = 0; i < playerFace.length(); i++) {
+				output += playerFace.at(i);
+			if ((i + 1) % 25 == 0) {
+				output += L"\n";
+				}
+			}
+			wcout << output << endl;
 			break;
 		case 5:
-			wcout << L"Mouth Options: " << endl;
+			wcout << L"Face Shape Options: " << endl;
 			for (int i = 0; i < SIZE; i++) {
 				wcout << i + 1 << L")" << endl;
-				wcout << shapeMenu[i] << endl;
+				wstring shapeOpt = faceString;
+				addShape(shapeOpt, shape[i]);
+				displayFace(shapeOpt);
 			}
 			cin >> selection2;
+			addShape(playerFace, shape[selection2 -1]);
+			output = L"";
+			for (int i = 0; i < playerFace.length(); i++) {
+				output += playerFace.at(i);
+			if ((i + 1) % 25 == 0) {
+				output += L"\n";
+				}
+			}
+			wcout << output << endl;
 			break;
 		default:
 			cout << "Please try again" << endl;
@@ -289,6 +341,7 @@ int main() {
 		}
 
 	}
+	count++;
 	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	//system("CLS");
 
@@ -359,7 +412,7 @@ int faceRand() {
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	srand(seed);
 
-	randNum = (int)floor(rand() % 5);
+	randNum = (rand() % 5);
 
 	return randNum;
 }
