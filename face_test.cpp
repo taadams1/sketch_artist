@@ -10,9 +10,9 @@
 
 using namespace std;
 
-void addEyes(wstring &, wstring);
-void addNose(wstring &, wstring);
-void addMouth(wstring &, wstring);
+void addEyes(wstring &, vector<wstring>);
+void addNose(wstring &, vector<wstring>);
+void addMouth(wstring &, vector<wstring>);
 void addHair(wstring &, vector<wstring>);
 void addShape(wstring &, vector<wstring>);
 void displayFace(wstring);
@@ -129,26 +129,26 @@ int main() {
 		LR"(  ¯ --- ¯  )"
 	};
 
-	vector <wstring> eyes = {
-		LR"(  === ≡ ===  ─(¯¶¯)─(¯¶¯)─)",
-		LR"(  ___   ___     õ,' '¸õ   )",
-		LR"(  ‗‗‗   ‗‗‗    ~º.   .º~  )",
-		LR"(  ___   ___   ¨.ç_   _ç.¨ )",
-		LR"(  ___   ___   ¨.ð,> <,ð.¨ )"
+	vector <vector<wstring>> eyes = {
+		{LR"(  === ≡ ===  )",LR"(─(¯¶¯)─(¯¶¯)─)"},
+		{LR"(  ___   ___  )",LR"(   õ,' '¸õ   )"},
+		{LR"(  ‗‗‗   ‗‗‗  )",LR"(  ~º.   .º~  )"},
+		{LR"(  ___   ___  )",LR"( ¨.ç_   _ç.¨ )"},
+		{LR"(  ___   ___  )",LR"( ¨.ð,> <,ð.¨ )"}
 	};
-	vector <wstring> noses = {
-		LR"(   (_))",
-		LR"( | '-')",
-		LR"(| |«_»)",
-		LR"( ≡ d_b)",
-		LR"( ¦ d_b)"
+	vector <vector<wstring>> noses = {
+		{LR"(   )",LR"((_))"},
+		{LR"( | )",LR"('-')"},
+		{LR"(| |)",LR"(«_»)"},
+		{LR"( ≡ )",LR"(d_b)"},
+		{LR"( ¦ )",LR"(d_b)"}
 	};
-	vector <wstring> mouths = {
-		LR"(/_____\   =   )",
-		LR"( ¬===⌐        )",
-		LR"( _‗‗‗_   ¯¯¯  )",
-		LR"( -═══-    -   )",
-		LR"( =═══=    ¯   )"
+	vector <vector<wstring>> mouths = {
+		{LR"(/_____\)",LR"(   =   )"},
+		{LR"( ¬===⌐ )",LR"(       )"},
+		{LR"( _‗‗‗_ )",LR"(  ¯¯¯  )"},
+		{LR"( -═══- )",LR"(   -   )"},
+		{LR"( =═══= )",LR"(   ¯   )"}
 	};
 	vector <vector<wstring>> hair = {
 		hair1, hair2, hair3, hair4, hair5
@@ -303,22 +303,22 @@ int main() {
 	}
 }
 
-void addEyes(wstring &face, wstring eyes) {
+void addEyes(wstring &face, vector<wstring> eyes) {
 	
-	face.replace(156, 13, eyes.substr(0,13));
-	face.replace(181, 13, eyes.substr(13,25));
+	face.replace(156, 13, eyes[0]);
+	face.replace(181, 13, eyes[1]);
 }
 
-void addNose(wstring &face, wstring nose) {
+void addNose(wstring &face, vector<wstring> nose) {
 
-	face.replace(211, 3, nose.substr(0, 3));
-	face.replace(236, 3, nose.substr(3, 5));
+	face.replace(211, 3, nose[0]);
+	face.replace(236, 3, nose[1]);
 }
 
-void addMouth(wstring &face, wstring mouth) {
+void addMouth(wstring &face, vector<wstring> mouth) {
 	
-	face.replace(259, 7, mouth.substr(0,7));
-	face.replace(284, 7, mouth.substr(7,13));
+	face.replace(259, 7, mouth[0]);
+	face.replace(284, 7, mouth[1]);
 }
 
 void addHair(wstring &face, vector<wstring> hair) {
