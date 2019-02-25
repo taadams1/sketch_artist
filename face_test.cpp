@@ -15,6 +15,7 @@ void addNose(wstring &, wstring);
 void addMouth(wstring &, wstring);
 void addHair(wstring &, vector<wstring>);
 void addShape(wstring &, vector<wstring>);
+void displayFace(wstring);
 
 int faceRand();
 
@@ -178,7 +179,7 @@ int main() {
 		}
 	}
 	wcout << output;
-	wcout << flush;
+	wcout << endl;
 	std::this_thread::sleep_for(std::chrono::milliseconds(1300));
 	system("CLS");
 
@@ -268,7 +269,9 @@ int main() {
 			wcout << L"Hair Options: " << endl;
 			for (int i = 0; i < SIZE; i++) {
 				wcout << i + 1 << L")" << endl;
-				wcout << hairMenu[i] << endl;
+				wstring hairOpt = faceString;
+				addHair(hairOpt, hair[i]);
+				displayFace(hairOpt);
 			}
 			cin >> selection2;
 			break;
@@ -349,6 +352,7 @@ void addShape(wstring &face, vector<wstring> shape) {
 	face.replace(307, 11, shape[3]);
 }
 
+//faceRand returns random number between 0 and 4 for index of facial features
 int faceRand() {
 	int randNum;
 
@@ -358,5 +362,16 @@ int faceRand() {
 	randNum = (int)floor(rand() % 5);
 
 	return randNum;
+}
+
+void displayFace(wstring face) {
+	wstring display;
+	for (int i = 0; i < face.length(); i++) {
+		display += face.at(i);
+		if ((i + 1) % 25 == 0) {
+			display += L"\n";
+		}
+	}
+	wcout << display << endl;
 }
 
