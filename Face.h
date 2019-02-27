@@ -12,7 +12,7 @@ using namespace std;
 class Face
 {
 private:
-	wstring face;
+	vector<wstring> face;
 public:
 	Face();
 	~Face();
