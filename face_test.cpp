@@ -14,15 +14,19 @@ using namespace std;
 
 enum Difficulty { hard = 5, medium = 8, easy = 10, };
 
-
 int faceRand();
 
 int main() {
 
 	Face testFace;
 
-	int randEyes, randNose, randMouth, randHair, randShape,
-		userEyes, userNose, userMouth, userHair, userShape;
+	int randEyes, randNose, randMouth, randHair, randShape;
+	//initialize with negative one in case feature is not selected in game
+	int	userEyes = -1;
+	int userNose = -1;
+	int userMouth = -1;
+	int userHair = -1;
+	int userShape = -1;
 
 	float score = 0;
 
@@ -201,7 +205,7 @@ int main() {
 	testFace.DisplayFace(criminalFace);
 	//wait then clear criminal face
 	//todo - make this more intersting (animation?)
-	std::this_thread::sleep_for(std::chrono::milliseconds(1700));
+	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 	system("CLS");
 
 	//flavor text placeholder
@@ -228,12 +232,13 @@ int main() {
 	wstring menu[SIZE];
 	menu[0] = L"Eyes"; menu[1] = L"Nose"; menu[2] = L"Mouth"; menu[3] = L"Hair"; menu[4] = L"Face Shape";
 
-  vector<vector<wstring>> opts;//vector to hold features for menu options
+
+	vector<vector<wstring>> opts;//vector to hold features for menu options
 
 	int count = 0;
 	while (count < difficulty) {
-
 		wcout << L"Please Pick a Feature to Edit:" << endl;
+		wcout << L"To exit enter -1" << endl;
 		for (int i = 0; i < 5; i++) {
 			wcout << i + 1 << L") ";
 			wcout << menu[i] << endl;
@@ -241,12 +246,23 @@ int main() {
 
 		cin >> selection;
 		switch (selection) {
+		case -1:
+			wcout << L"Goodbye.";
+			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+			return 0;
 		case 1:
 			wcout << L"Eye Options: " << endl;
-			testFace.MenuOptions(eyes);
+			opts.clear();
+			for (int i = 0; i < SIZE; i++) {
 
+				vector<wstring> eyeOpt = faceTemplate;
+
+				testFace.AddEyes(eyeOpt, eyes[i]);
+				opts.push_back(eyeOpt);
+
+			}
+			testFace.MenuOptions(opts);
 			cin >> selection2;
-
 			userEyes = selection2 - 1;
 			testFace.AddEyes(playerFace, eyes[selection2 -1]);
 
@@ -256,28 +272,41 @@ int main() {
 			break;
 		case 2:
 			wcout << L"Nose Options: " << endl;
-			
-			testFace.MenuOptions(noses);
+			opts.clear();
+			for (int i = 0; i < SIZE; i++) {
+
+				vector<wstring> noseOpt = faceTemplate;
+
+				testFace.AddNose(noseOpt, noses[i]);
+				opts.push_back(noseOpt);
+
+			}
+			testFace.MenuOptions(opts);
 			cin >> selection2;
 			userNose = selection2 - 1;
 			testFace.AddNose(playerFace, noses[selection2 -1]);
 			
 			system("CLS");
 			testFace.DisplayFace(playerFace);
-
 			break;
 		case 3:
 			wcout << L"Mouth Options: " << endl;
-			
-			testFace.MenuOptions(mouths);
-			cin >> selection2;
+			opts.clear();
+			for (int i = 0; i < SIZE; i++) {
 
+				vector<wstring> mouthOpt = faceTemplate;
+
+				testFace.AddMouth(mouthOpt, mouths[i]);
+				opts.push_back(mouthOpt);
+
+			}
+			testFace.MenuOptions(opts);
+			cin >> selection2;
 			userMouth = selection2 - 1;
 			testFace.AddMouth(playerFace, mouths[selection2 -1]);
 			
 			system("CLS");
 			testFace.DisplayFace(playerFace);
-
 			break;
 		case 4:
 			wcout << L"Hair Options: " << endl;
@@ -292,7 +321,6 @@ int main() {
 			}
 			testFace.MenuOptions(opts);
 			cin >> selection2;
-
 			userHair = selection2 - 1;
 			testFace.AddHair(playerFace, hair[selection2 -1]);
 			
@@ -308,18 +336,14 @@ int main() {
 				
 				testFace.AddShape(shapeOpt, shape[i]);
 				opts.push_back(shapeOpt);
-
-
 			}
 			testFace.MenuOptions(opts);
 			cin >> selection2;
-
 			userShape = selection2 - 1;
 			testFace.AddShape(playerFace, shape[selection2 -1]);
 			
 			system("CLS");
 			testFace.DisplayFace(playerFace);
-
 			break;
 		default:
 			wcout << L"Please try again" << endl;
@@ -350,9 +374,10 @@ int main() {
 	wcout << L"% accuracy." << endl;
 	wcout << L"-----------------" << endl;
 	wcout << L"|    Criminal   |" << endl;
-	wcout << L"-----------------" << endl << endl;
+	wcout << L"-----------------" << endl;
 
 	testFace.DisplayFace(criminalFace);
+
 
 	
 	char exit;
@@ -363,6 +388,7 @@ int main() {
 		return 0;
 	}
 }
+
 
 //faceRand returns random number between 0 and 4 for index of facial features
 int faceRand() {

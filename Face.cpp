@@ -34,7 +34,7 @@ void Face::MenuOptions(vector<vector<wstring>> features)
 
 		wstring menuOptions = LR"()";
 
-		for (int j = 0; j < features.size(); j++) {
+		for (int j = 0; j < 3; j++) {
 
 			if (i == 0) {
 
@@ -48,6 +48,25 @@ void Face::MenuOptions(vector<vector<wstring>> features)
 		}
 		wcout << menuOptions << endl;
 	}
+	for (int i = 0; i < featSize; i++) {
+
+		wstring menuOptions = LR"()";
+
+		for (int j = 3; j < features.size(); j++) {
+
+			if (i == 0) {
+
+				menuOptions += L"  " + to_wstring(j + 1) + L"  " + features[j][i];
+			}
+			else {
+
+				menuOptions += L"     " + features[j][i];
+			}
+
+		}
+		wcout << menuOptions << endl;
+	}
+	wcout << L"Choice: ";
 }
 
 void Face::AddEyes(vector<wstring>& face, vector<wstring> eyes) {
