@@ -8,32 +8,55 @@
 #include <chrono>
 #include <thread>
 
+#include "Face.h"
+
 using namespace std;
 
-void addEyes(wstring &, vector<wstring>);
-void addNose(wstring &, vector<wstring>);
-void addMouth(wstring &, vector<wstring>);
-void addHair(wstring &, vector<wstring>);
-void addShape(wstring &, vector<wstring>);
-void displayFace(wstring);
+enum Difficulty { hard = 5, medium = 8, easy = 10, };
+
 
 int faceRand();
 
 int main() {
 
+	Face testFace;
+
 	int randEyes, randNose, randMouth, randHair, randShape,
 		userEyes, userNose, userMouth, userHair, userShape;
+
+	float score = 0;
 
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 
 	//force output to unicode
 	_setmode(_fileno(stdout), _O_U16TEXT);
 
+	wcout << L"Notice: The terminal may need to be resized for the best experience." << endl;
+	for (int i = 0; i < 9; i++) {
+		wcout << L".";
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	}
+	system("CLS");
+
 	//use wide string (L) to hold special characters and string literal (R"()") to ignore escape characters
-	wstring faceString = LR"(-------------------------|                       ||                       ||       _________       ||      /         \      ||     /           \     ||    |  ---------  |    ||    | ----------- |    ||    |      |      |    ||    \     d b     /    ||     \   -----   /     ||      \         /      ||        -------        ||                       |-------------------------)";
-	//wstring testEyes = LR"(  === ≡ ===  ─(¯¶¯)─(¯¶¯)─)";
-	//unsigned char eyeNums[] = { 32,32,61,61,61,32,240,32,61,61,61,32,32,196,40,249,233,249,41,196,40,249,233,249,41,196,40 };
-	//wstring testMouth = LR"(/_____\   =   )";
+	
+	vector<wstring> faceTemplate = {
+		LR"(-------------------------)",
+		LR"(|                       |)",
+		LR"(|                       |)",
+		LR"(|       _________       |)",
+		LR"(|      /         \      |)",
+		LR"(|     /           \     |)",
+		LR"(|    |  ---------  |    |)",
+		LR"(|    | ----------- |    |)",
+		LR"(|    |      |      |    |)",
+		LR"(|    \     d b     /    |)",
+		LR"(|     \   -----   /     |)",
+		LR"(|      \         /      |)",
+		LR"(|        -------        |)",
+		LR"(|                       |)",
+		LR"(-------------------------)" };
+	
 	wstring output;
 
 	//facial features hard coded
@@ -157,87 +180,59 @@ int main() {
 		shape1, shape2, shape3, shape4, shape5
 	};
 
-	output = L"";
-	wstring criminalFace = faceString;
+	//create template for criminal face
+	vector<wstring> criminalFace = faceTemplate;
 
+	//choose and track values for criminal features
 	randEyes = faceRand();
 	randNose = faceRand();
 	randMouth = faceRand();
 	randHair = faceRand();
 	randShape = faceRand();
 
-	addEyes(criminalFace, eyes[randEyes]);
-	addNose(criminalFace, noses[randNose]);
-	addMouth(criminalFace, mouths[randMouth]);
-	addHair(criminalFace, hair[randHair]);
-	addShape(criminalFace, shape[randShape]);
+	//call face class functions to construct criminal face
+	testFace.AddEyes(criminalFace, eyes[randEyes]);
+	testFace.AddNose(criminalFace, noses[randNose]);
+	testFace.AddMouth(criminalFace, mouths[randMouth]);
+	testFace.AddHair(criminalFace, hair[randHair]);
+	testFace.AddShape(criminalFace, shape[randShape]);
 
-	for (int i = 0; i < criminalFace.length(); i++) {
-		output += criminalFace.at(i);
-		if ((i + 1) % 25 == 0) {
-			output += L"\n";
-		}
-	}
-	wcout << output;
-	wcout << endl;
-	std::this_thread::sleep_for(std::chrono::milliseconds(1300));
+	//display criminal face
+	testFace.DisplayFace(criminalFace);
+	//wait then clear criminal face
+	//todo - make this more intersting (animation?)
+	std::this_thread::sleep_for(std::chrono::milliseconds(1700));
 	system("CLS");
 
+	//flavor text placeholder
 	wcout << L"The criminal got away!" << endl;
 	wcout << L"Help the detective by describing the criminal." << endl;
 
-	wstring playerFace = faceString;
-	output = L"";
+	//difficulty choice and tutorial around the start
+	int difficulty = hard;
 
-	for (int i = 0; i < playerFace.length(); i++) {
-		output += playerFace.at(i);
-		if ((i + 1) % 25 == 0) {
-			output += L"\n";
-		}
+	wcout << L"You have " << to_wstring(hard) << L" choices." << endl;
 
-	}
+	//create template for player face
+	vector<wstring> playerFace = faceTemplate;
 
-	wcout << output << endl;
+	testFace.DisplayFace(playerFace);
 
 	//menu code by Mikaela
-
+	//track player choices for menu
 	int selection = 0;
 	int selection2 = 0;
+	
+	//menu options
 	const int SIZE = 5;
 	wstring menu[SIZE];
 	menu[0] = L"Eyes"; menu[1] = L"Nose"; menu[2] = L"Mouth"; menu[3] = L"Hair"; menu[4] = L"Face Shape";
 
-	vector <wstring> eyesMenu = {
-		L"  === ≡ ===  \n─(¯¶¯)─(¯¶¯)─",
-		L"  ___   ___    \n   õ,' '¸õ   ",
-		L"  ‗‗‗    ‗‗‗    \n  ~º.   .º~  ",
-		L"  ___   ___   \n ¨.ç_   _ç.¨ ",
-		L"  ___   ___   \n ¨.ð,> <,ð.¨ "
-	};
-	
-	vector <wstring> noseMenu = {
-		L"   \n(_)",
-		L" | \n'-'",
-		L"| |\n«_»",
-		L" ≡ \nd_b",
-		L" ¦ \nd_b"
-	};
-	
-	vector <wstring> mouthMenu = {
-		L"/_____\\\n   =   ",
-		L" ¬===⌐\n        ",
-		L" _‗‗‗_\n  ¯¯¯  ",
-		L" -═══-\n   -   ",
-		L" =═══=\n   ¯   "
-	};
-
-	wstring hairMenu[SIZE];
-
-	wstring shapeMenu[SIZE];
-
+  vector<vector<wstring>> opts;//vector to hold features for menu options
 
 	int count = 0;
-	while (count < 5) {
+	while (count < difficulty) {
+
 		wcout << L"Please Pick a Feature to Edit:" << endl;
 		for (int i = 0; i < 5; i++) {
 			wcout << i + 1 << L") ";
@@ -248,103 +243,116 @@ int main() {
 		switch (selection) {
 		case 1:
 			wcout << L"Eye Options: " << endl;
-			for (int i = 0; i < SIZE; i++) {
-				wcout << i + 1 << L")" << endl;
-				wcout << eyesMenu[i] << endl;
-			}
+			testFace.MenuOptions(eyes);
+
 			cin >> selection2;
-			addEyes(playerFace, eyes[selection2 -1]);
-			output = L"";
-			for (int i = 0; i < playerFace.length(); i++) {
-				output += playerFace.at(i);
-			if ((i + 1) % 25 == 0) {
-				output += L"\n";
-				}
-			}
-			wcout << output << endl;
+
+			userEyes = selection2 - 1;
+			testFace.AddEyes(playerFace, eyes[selection2 -1]);
+
+			system("CLS");
+			testFace.DisplayFace(playerFace);
+			
 			break;
 		case 2:
 			wcout << L"Nose Options: " << endl;
-			for (int i = 0; i < SIZE; i++) {
-				wcout << i + 1 << L")\n" << endl;
-				wcout << noseMenu[i] << endl;
-			}
+			
+			testFace.MenuOptions(noses);
 			cin >> selection2;
-			addNose(playerFace, noses[selection2 -1]);
-			output = L"";
-			for (int i = 0; i < playerFace.length(); i++) {
-				output += playerFace.at(i);
-			if ((i + 1) % 25 == 0) {
-				output += L"\n";
-				}
-			}
-			wcout << output << endl;
+			userNose = selection2 - 1;
+			testFace.AddNose(playerFace, noses[selection2 -1]);
+			
+			system("CLS");
+			testFace.DisplayFace(playerFace);
+
 			break;
 		case 3:
 			wcout << L"Mouth Options: " << endl;
-			for (int i = 0; i < SIZE; i++) {
-				wcout << i + 1 << L")" << endl;
-				wcout << mouthMenu[i] << endl;
-			}
+			
+			testFace.MenuOptions(mouths);
 			cin >> selection2;
-			addMouth(playerFace, mouths[selection2 -1]);
-			output = L"";
-			for (int i = 0; i < playerFace.length(); i++) {
-				output += playerFace.at(i);
-			if ((i + 1) % 25 == 0) {
-				output += L"\n";
-				}
-			}
-			wcout << output << endl;
+
+			userMouth = selection2 - 1;
+			testFace.AddMouth(playerFace, mouths[selection2 -1]);
+			
+			system("CLS");
+			testFace.DisplayFace(playerFace);
+
 			break;
 		case 4:
 			wcout << L"Hair Options: " << endl;
+			opts.clear();
 			for (int i = 0; i < SIZE; i++) {
-				wcout << i + 1 << L")" << endl;
-				wstring hairOpt = faceString;
-				addHair(hairOpt, hair[i]);
-				displayFace(hairOpt);
+				
+				vector<wstring> hairOpt = faceTemplate;
+				
+				testFace.AddHair(hairOpt, hair[i]);
+				opts.push_back(hairOpt);
+				
 			}
+			testFace.MenuOptions(opts);
 			cin >> selection2;
-			addHair(playerFace, hair[selection2 -1]);
-			output = L"";
-			for (int i = 0; i < playerFace.length(); i++) {
-				output += playerFace.at(i);
-			if ((i + 1) % 25 == 0) {
-				output += L"\n";
-				}
-			}
-			wcout << output << endl;
+
+			userHair = selection2 - 1;
+			testFace.AddHair(playerFace, hair[selection2 -1]);
+			
+			system("CLS");
+			testFace.DisplayFace(playerFace);
 			break;
 		case 5:
 			wcout << L"Face Shape Options: " << endl;
+			opts.clear();
 			for (int i = 0; i < SIZE; i++) {
-				wcout << i + 1 << L")" << endl;
-				wstring shapeOpt = faceString;
-				addShape(shapeOpt, shape[i]);
-				displayFace(shapeOpt);
+				
+				vector<wstring> shapeOpt = faceTemplate;
+				
+				testFace.AddShape(shapeOpt, shape[i]);
+				opts.push_back(shapeOpt);
+
+
 			}
+			testFace.MenuOptions(opts);
 			cin >> selection2;
-			addShape(playerFace, shape[selection2 -1]);
-			output = L"";
-			for (int i = 0; i < playerFace.length(); i++) {
-				output += playerFace.at(i);
-			if ((i + 1) % 25 == 0) {
-				output += L"\n";
-				}
-			}
-			wcout << output << endl;
+
+			userShape = selection2 - 1;
+			testFace.AddShape(playerFace, shape[selection2 -1]);
+			
+			system("CLS");
+			testFace.DisplayFace(playerFace);
+
 			break;
 		default:
-			cout << "Please try again" << endl;
+			wcout << L"Please try again" << endl;
 			break;
 		}
 
-	}
-	count++;
-	//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-	//system("CLS");
+		count++;
 
+	}
+
+	if (randEyes == userEyes) {
+		score++;
+	}
+	if (randNose == userNose) {
+		score++;
+	}
+	if (randMouth == userMouth) {
+		score++;
+	}
+	if (randHair == userHair) {
+		score++;
+	}
+	if (randShape == userShape) {
+		score++;
+	}
+
+	wcout << L"You recreated the criminal's features with " << (score * 20);
+	wcout << L"% accuracy." << endl;
+	wcout << L"-----------------" << endl;
+	wcout << L"|    Criminal   |" << endl;
+	wcout << L"-----------------" << endl << endl;
+
+	testFace.DisplayFace(criminalFace);
 
 	
 	char exit;
@@ -354,55 +362,6 @@ int main() {
 	{
 		return 0;
 	}
-}
-
-void addEyes(wstring &face, vector<wstring> eyes) {
-	
-	face.replace(156, 13, eyes[0]);
-	face.replace(181, 13, eyes[1]);
-}
-
-void addNose(wstring &face, vector<wstring> nose) {
-
-	face.replace(211, 3, nose[0]);
-	face.replace(236, 3, nose[1]);
-}
-
-void addMouth(wstring &face, vector<wstring> mouth) {
-	
-	face.replace(259, 7, mouth[0]);
-	face.replace(284, 7, mouth[1]);
-}
-
-void addHair(wstring &face, vector<wstring> hair) {
-
-	face.replace(53, 19, hair[0]);
-	face.replace(78, 19, hair[1]);
-	face.replace(103, 19, hair[2]);
-	face.replace(128, 19, hair[3]);
-	face.replace(153, 4, (hair[4]).substr(0,4));
-	face.replace(168, 4, (hair[4]).substr(4,7));
-	face.replace(178, 3, (hair[5]).substr(0, 3));
-	face.replace(194, 3, (hair[5]).substr(3, 5));
-	face.replace(203, 3, (hair[6]).substr(0, 3));
-	face.replace(219, 3, (hair[6]).substr(3, 5));
-	face.replace(228, 2, (hair[7]).substr(0, 2));
-	face.replace(245, 2, (hair[7]).substr(2, 3));
-	face.replace(253, 2, (hair[8]).substr(0, 2));
-	face.replace(270, 2, (hair[8]).substr(2, 3));
-	face.replace(278, 3, (hair[9]).substr(0, 3));
-	face.replace(294, 3, (hair[9]).substr(3, 5));
-}
-
-void addShape(wstring &face, vector<wstring> shape) {
-
-	face.replace(230, 4, (shape[0]).substr(0,4));
-	face.replace(241, 4, (shape[0]).substr(4, 7));
-	face.replace(256, 3, (shape[1]).substr(0, 3));
-	face.replace(266, 3, (shape[1]).substr(3, 5));
-	face.replace(281, 4, (shape[2]).substr(0, 4));
-	face.replace(290, 4, (shape[2]).substr(4, 7));
-	face.replace(307, 11, shape[3]);
 }
 
 //faceRand returns random number between 0 and 4 for index of facial features
@@ -417,14 +376,4 @@ int faceRand() {
 	return randNum;
 }
 
-void displayFace(wstring face) {
-	wstring display;
-	for (int i = 0; i < face.length(); i++) {
-		display += face.at(i);
-		if ((i + 1) % 25 == 0) {
-			display += L"\n";
-		}
-	}
-	wcout << display << endl;
-}
 
