@@ -14,6 +14,7 @@ using namespace std;
 
 enum Difficulty { hard = 5, medium = 8, easy = 10, };
 
+
 int faceRand();
 
 int main() {
@@ -227,11 +228,11 @@ int main() {
 	wstring menu[SIZE];
 	menu[0] = L"Eyes"; menu[1] = L"Nose"; menu[2] = L"Mouth"; menu[3] = L"Hair"; menu[4] = L"Face Shape";
 
-
-	vector<vector<wstring>> opts;//vector to hold features for menu options
+  vector<vector<wstring>> opts;//vector to hold features for menu options
 
 	int count = 0;
 	while (count < difficulty) {
+
 		wcout << L"Please Pick a Feature to Edit:" << endl;
 		for (int i = 0; i < 5; i++) {
 			wcout << i + 1 << L") ";
@@ -245,6 +246,7 @@ int main() {
 			testFace.MenuOptions(eyes);
 
 			cin >> selection2;
+
 			userEyes = selection2 - 1;
 			testFace.AddEyes(playerFace, eyes[selection2 -1]);
 
@@ -262,17 +264,20 @@ int main() {
 			
 			system("CLS");
 			testFace.DisplayFace(playerFace);
+
 			break;
 		case 3:
 			wcout << L"Mouth Options: " << endl;
 			
 			testFace.MenuOptions(mouths);
 			cin >> selection2;
+
 			userMouth = selection2 - 1;
 			testFace.AddMouth(playerFace, mouths[selection2 -1]);
 			
 			system("CLS");
 			testFace.DisplayFace(playerFace);
+
 			break;
 		case 4:
 			wcout << L"Hair Options: " << endl;
@@ -287,6 +292,7 @@ int main() {
 			}
 			testFace.MenuOptions(opts);
 			cin >> selection2;
+
 			userHair = selection2 - 1;
 			testFace.AddHair(playerFace, hair[selection2 -1]);
 			
@@ -302,14 +308,18 @@ int main() {
 				
 				testFace.AddShape(shapeOpt, shape[i]);
 				opts.push_back(shapeOpt);
+
+
 			}
 			testFace.MenuOptions(opts);
 			cin >> selection2;
+
 			userShape = selection2 - 1;
 			testFace.AddShape(playerFace, shape[selection2 -1]);
 			
 			system("CLS");
 			testFace.DisplayFace(playerFace);
+
 			break;
 		default:
 			wcout << L"Please try again" << endl;
@@ -344,7 +354,6 @@ int main() {
 
 	testFace.DisplayFace(criminalFace);
 
-
 	
 	char exit;
 	wcout << L"Exit? (y/n): ";
@@ -354,7 +363,6 @@ int main() {
 		return 0;
 	}
 }
-
 
 //faceRand returns random number between 0 and 4 for index of facial features
 int faceRand() {
