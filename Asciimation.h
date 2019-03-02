@@ -1,4 +1,7 @@
-﻿#pragma once
+﻿//Header for Asciimation Class
+//Trevor Adams, taadams1@dmacc.edu
+
+#pragma once
 #ifndef Asciimation_H
 #define Asciimation_H
 #endif // !Animation_H

@@ -1,6 +1,6 @@
 ﻿///Trevor Adams, taadams1@dmacc.edu, 2-24-19
 //implementation of asciimation class
-//
+//added/updated functions for integration into "Sketch Artist" project
 
 #include "Asciimation.h"
 

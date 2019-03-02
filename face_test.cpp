@@ -1,4 +1,10 @@
-﻿#include <iostream>
+﻿//Advanced C++ Midterm Group Project
+//Trevor Adams, taadams1@dmacc.edu
+//Mikaela Stanislav, mstanislav@dmacc.edu
+//Ethan Douglass, etdouglass@dmacc.edu
+//Alan Sanders, acsanders1@dmacc.edu
+
+#include <iostream>
 #include <string>
 #include <stdio.h>
 #include <io.h>
@@ -15,9 +21,13 @@ using namespace std;
 
 enum Difficulty { hard = 5, medium = 8, easy = 10, };
 
+//Functions - Trevor Adams
 int faceRand();
-void intro(int random);
 bool selectionRange(int);
+
+//Functions - Ethan Douglass
+void intro(int random);
+
 
 int main() {
 

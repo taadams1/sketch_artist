@@ -1,3 +1,6 @@
+//Header for Face class
+//Trevor Adams, taadams1@dmacc.edu
+
 #pragma once
 #ifndef Face_H
 #define Face_H
